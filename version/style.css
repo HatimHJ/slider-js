@@ -1,0 +1,89 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+h1 span{
+    color: tomato;
+}
+.body{
+    min-height: 100vh;
+    background-color: antiquewhite;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+/* 
+==============================================
+============= slider nav ===========================
+==============================================
+*/
+.nav{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+.nav > div{
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;    
+}
+
+/* 
+==============================================
+============= slider =========================
+==============================================
+*/
+.slider{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 90%;
+    height: 260px;
+    background-color: thistle;
+    position: relative;
+    overflow: hidden;
+}
+/* 
+==============================================
+============= card ===========================
+==============================================
+*/
+
+.card{
+    border: 1px solid #444;
+    padding: 15px;
+    text-align: center;
+    background-color: wheat;
+    max-width: 300px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.card.next-clicked{
+    right: -100%;
+    left: auto;
+}
+.card.prev-clicked{
+    left: -100%;
+    right: auto;
+}
+
+.card.next-clicked.active{
+    transition: all 1s;
+    transform: translate(50%, -50%);
+    right: 50% !important;
+    left: auto !important;
+}
+.card.prev-clicked.active{
+    transition: all 1s;
+    transform: translate(-50%, -50%);
+    left: 50% !important;
+    right: auto !important;
+}
+
