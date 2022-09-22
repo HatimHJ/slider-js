@@ -43,8 +43,18 @@ function navHandler(index, isLooping){
         }else if(index == last){
             sliderNav[1].style.visibility = 'hidden'
         }
+    }else{
+        loopingIndex(index)
     }
 }
+function loopingIndex(index){
+    if(index < 0){
+        active = last
+    }else if(index > last) {
+        active = 0
+    }
+}
+// nav clicking
 sliderNav.forEach( el => {
     el.addEventListener('click', () =>{
         if(el.classList.contains('prev')) {
