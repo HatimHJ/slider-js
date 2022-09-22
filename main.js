@@ -1,6 +1,7 @@
 /*
     ==================================================v3
     1- dots 
+    2- to loop or not to loop
     ====================================================
 */
 
@@ -8,76 +9,74 @@
 const sliderNav = [...document.querySelector('.nav').children]
 const cards = [...document.querySelectorAll('.card')]
 const dots = document.querySelector('.dots')
-let active = 0;
 const last = cards.length -1;
+const looping = false;
+let active = 0;
 
-// what will happen if [next || prev] 'buttons' clicked
-sliderNav.forEach( (nav, n) => {
-    nav.addEventListener('click', () => {
-        const sliderNumber = handleNav(n);
-        sliderNumber.push('fade')
-        cardHandler(sliderNumber);
-    })
-})
-
-// handling [next || prev] and filtering active slide index
-const handleNav = (n) => {
-    let resetClass = 'next-clicked';
-    // prev click
-    if(n == 0){
-        resetClass = 'prev-clicked';
-        if(active < 1) active = last;
-        else 
-        active -= 1;
-    }
-    // next click
-    else{
-        if (active >= last) {
-            active = 0;
-        }
-        else {
-            active +=1;
-        }
-    }
-    return [active, resetClass];
-}
-
-// the meat and potato
-function cardHandler(sliderNumber)  {
-    const suffix = 'clicked';
-    // if(sliderNumber[2] == 'fade'){
-    //     cards.forEach(card => {
-    //         card.classList.remove( `next-${suffix}`, `prev-${suffix}`)
-    //     })
-    //     return
-    // }
-    cards.forEach(card => {
-        card.classList.remove('active', `next-${suffix}`, `prev-${suffix}`)
-        card.classList.add(sliderNumber[1]);
-    })
-    dotHandler()
-    setTimeout(()=>{
-        dots.children[sliderNumber[0]].classList.add('dot-active');
-        cards[sliderNumber[0]].classList.add('active');
-    }, 50)
-}
-
-// be aware from the dots
-function dotHandler(){
-    Array.from(dots.children).forEach(el => {
-        el.classList.remove('dot-active');
-    });
-}
-
-// dots initial
+// after the html loaded
 window.addEventListener('DOMContentLoaded', () => {
+
+    // dots initial
     for (let i = 0; i <= last; i++) {
         if(i == active){
-            dots.innerHTML +=  `<span class="dot dot-active"></span>`
+            dots.innerHTML +=  `<span class="dot dot-active"></span>`;
         }else{
-            dots.innerHTML +=  `<span class="dot "></span>`
+            dots.innerHTML +=  `<span class="dot "></span>`;
         }
     }
+    // the html does not contain dot span so the code below MUST BE HERE  
+    Array.from(dots.children).forEach( (el, index) => {    
+        el.addEventListener('click', () => {
+            // change the active 
+            active = index;
+            dotClicked(active);
+        })
+    })
+    navHandler(active, looping)
 })
 
+function navHandler(index, isLooping){
+    if(!isLooping){
+        sliderNav.forEach(el => el.style.visibility = 'visible')
+        if(index == 0){
+            sliderNav[0].style.visibility = 'hidden'
+        }else if(index == last){
+            sliderNav[1].style.visibility = 'hidden'
+        }
+    }
+}
+sliderNav.forEach( el => {
+    el.addEventListener('click', () =>{
+        if(el.classList.contains('prev')) {
+            active -= 1
+        }else{
+            active += 1
+        }
+        navHandler(active, looping)
+        cardHandler(active)
+        dotHandler(active)
+    })
+})
+// the meat and potato
+function cardHandler(index)  {
+    cards.forEach(card => {
+        card.classList.remove('active');
+    })
+    setTimeout(()=>{
+        cards[index].classList.add('active');
+    }, 50);
+}
 
+//  dots click
+function dotClicked(index){
+    dotHandler(index);
+    cardHandler(index);
+    navHandler(index, looping);
+}
+//  dots handler
+function dotHandler(index){
+    Array.from(dots.children).forEach(el => {
+        el.classList.remove('dot-active');
+    });    
+    dots.children[index].classList.add('dot-active');
+}

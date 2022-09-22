@@ -93,10 +93,6 @@ h1 span{
     right: auto;
 }
 
-.card.fade{
-
-}
-
 .card.next-clicked.active{
     transition: all 1s;
     transform: translate(50%, -50%);
