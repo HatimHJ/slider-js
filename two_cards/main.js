@@ -1,17 +1,11 @@
-/*
-    ==================================================v3
-    1- dots 
-    2- to loop or not to loop
-    ====================================================
-*/
-
-// no comment needed but the variables declaration
-const sliderNav = [...document.querySelector('.nav').children]
-const cards = [...document.querySelectorAll('.card')]
-const dots = document.querySelector('.dots')
+const sliderNav = [...document.querySelector('.nav').children];
+const cards = [...document.querySelectorAll('.card')];
+const dots = document.querySelector('.dots');
 const last = cards.length -1;
 const looping = false;
 let active = 0;
+let slideNum = 2;
+
 
 // after the html loaded
 window.addEventListener('DOMContentLoaded', () => {
@@ -32,51 +26,78 @@ window.addEventListener('DOMContentLoaded', () => {
             dotClicked(active);
         })
     })
-    navHandler(active, looping)
+    navHandler(active, looping);
+    cardHandler(active)
 })
 
 function navHandler(index, isLooping){
     if(!isLooping){
-        sliderNav.forEach(el => el.style.visibility = 'visible')
+        sliderNav.forEach(el => el.style.visibility = 'visible');
         if(index == 0){
-            sliderNav[0].style.visibility = 'hidden'
+            sliderNav[0].style.visibility = 'hidden';
         }else if(index == last){
-            sliderNav[1].style.visibility = 'hidden'
+            sliderNav[1].style.visibility = 'hidden';
         }
     }else{
-        loopingIndex(index)
+        if(index < 0){
+            active = last;
+        }else if(index > last) {
+            active = 0;
+        }
     }
 }
-function loopingIndex(index){
-    if(index < 0){
-        active = last
-    }else if(index > last) {
-        active = 0
-    }
-}
+
+
 // nav clicking
 sliderNav.forEach( el => {
     el.addEventListener('click', () =>{
         if(el.classList.contains('prev')) {
-            active -= 1
+            active -= 1;
         }else{
-            active += 1
+            active += 1;
         }
-        navHandler(active, looping)
-        cardHandler(active)
-        dotHandler(active)
+        navHandler(active, looping);
+        cardHandler(active);
+        dotHandler(active);
     })
 })
-// the meat and potato
+
+
+// next card
+function nextToActive(){
+    let next = active + 1
+    if (active == last){
+        next = 0;
+    }
+    return next
+}
+// prev card
+function prevToActive(){
+    let prev = active - 1
+    if (active == 0){
+        prev = last;
+    }
+    return prev
+}
+// the cards handler
 function cardHandler(index)  {
+    const prev = prevToActive()
+    const next = nextToActive()
     cards.forEach(card => {
-        card.classList.remove('active');
+        card.classList.remove('active', 'next', 'prev');
+        card.style.right = '-100%'
     })
     setTimeout(()=>{
+        cards[prev].classList.add('prev');
         cards[index].classList.add('active');
-    }, 50);
-}
+        cards[next].classList.add('next');
 
+        cards[active].style.right = '70% '
+        cards[next].style.right = '10%'
+    }, 50);
+    cards.forEach(card => {
+    })
+}
 //  dots click
 function dotClicked(index){
     dotHandler(index);

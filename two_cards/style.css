@@ -18,7 +18,7 @@ h1 span{
 }
 /* 
 ==============================================
-============= slider nav ===========================
+============= slider nav =====================
 ==============================================
 */
 .nav{
@@ -32,7 +32,27 @@ h1 span{
     cursor: pointer;
     user-select: none;    
 }
-
+/* 
+==============================================
+============= dots =========================
+==============================================
+*/
+.dots{
+    display: flex;
+    gap: 5px;
+}
+.dots .dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #444;
+    cursor: pointer;
+    user-select: none;
+}
+.dot-active{
+    box-shadow: 0 0 0 1px #f00;
+}
 /* 
 ==============================================
 ============= slider =========================
@@ -53,7 +73,6 @@ h1 span{
 ============= card ===========================
 ==============================================
 */
-
 .card{
     border: 1px solid #444;
     padding: 15px;
@@ -77,7 +96,7 @@ h1 span{
 .card.next-clicked.active{
     transition: all 1s;
     transform: translate(50%, -50%);
-    right: 50% !important;
+    right: 50% ;
     left: auto !important;
 }
 .card.prev-clicked.active{
